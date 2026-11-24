@@ -1,0 +1,38 @@
+# PR с «Closes #N» влит → issue закрыт → статус «сделано» в кабинете + сообщение владельцу.
+name: Feedback done
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  issues: read
+
+jobs:
+  done:
+    if: >-
+      contains(github.event.issue.labels.*.name, 'feedback') &&
+      !contains(github.event.issue.labels.*.name, 'rejected') &&
+      github.event.issue.state_reason == 'completed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Статус → done
+        env:
+          SB_URL: ${{ secrets.SUPABASE_URL }}
+          SB_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          N: ${{ github.event.issue.number }}
+        run: |
+          curl -sf -X PATCH "${SB_URL}/rest/v1/feedback?issue_number=eq.${N}" \
+            -H "apikey: ${SB_KEY}" -H "Authorization: Bearer ${SB_KEY}" \
+            -H 'Content-Type: application/json' -d '{"status":"done"}'
+      - name: Сообщение в Telegram
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_OWNER_ID }}
+          N: ${{ github.event.issue.number }}
+          URL: ${{ github.event.issue.html_url }}
+        run: |
+          jq -n --arg chat "$TG_CHAT" --arg n "$N" --arg url "$URL" \
+            '{chat_id:$chat, disable_web_page_preview:true, text:("🎉 Отзыв #"+$n+" реализован и влит. Пользователь увидит статус «Сделано».\n"+$url)}' \
+          | curl -sf -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+              -H 'Content-Type: application/json' --data @- > /dev/null

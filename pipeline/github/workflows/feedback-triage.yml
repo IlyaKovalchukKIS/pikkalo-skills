@@ -1,0 +1,77 @@
+# Отзыв → разбор Claude (Sonnet, по подписке Pro) → карточка в Telegram с кнопками.
+name: Feedback triage
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+  id-token: write
+
+concurrency:
+  group: triage-${{ github.event.issue.number }}
+
+jobs:
+  triage:
+    if: contains(github.event.issue.labels.*.name, 'feedback')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Разбор отзыва
+        uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Выполни инструкцию из файла .github/prompts/triage.md для issue #${{ github.event.issue.number }}
+            в репозитории ${{ github.repository }}.
+          claude_args: >-
+            --model sonnet
+            --max-turns 10
+            --allowedTools "Read,Write,Glob,Grep,Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh issue comment:*)"
+
+      - name: Карточка в Telegram
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_OWNER_ID }}
+          N: ${{ github.event.issue.number }}
+          URL: ${{ github.event.issue.html_url }}
+        run: |
+          test -f triage.json || { echo "triage.json не создан"; exit 1; }
+          jq -n --slurpfile t triage.json --arg chat "$TG_CHAT" --arg n "$N" --arg url "$URL" '
+            $t[0] as $x |
+            {
+              chat_id: $chat,
+              disable_web_page_preview: true,
+              text: ((
+                "🆕 Отзыв #" + $n + " · " + $x.kind + " · приоритет " + $x.priority + "\n\n" +
+                $x.summary + "\n\n" +
+                "План:\n" + $x.plan + "\n\n" +
+                "Исполнитель: " + $x.route + " · объём: " + $x.effort +
+                (if $x.risks != "" then "\nРиски: " + $x.risks else "" end) +
+                "\n" + $url
+              ) | .[0:3900]),
+              reply_markup: { inline_keyboard: [[
+                { text: "✅ Согласовать", callback_data: ("ok:" + $n) },
+                { text: "❌ Отклонить",   callback_data: ("no:" + $n) }
+              ]]}
+            }' > tg.json
+          curl -sf -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            -H 'Content-Type: application/json' --data @tg.json > /dev/null
+
+      - name: Статус в кабинете → triaged
+        env:
+          SB_URL: ${{ secrets.SUPABASE_URL }}
+          SB_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          N: ${{ github.event.issue.number }}
+        run: |
+          curl -sf -X PATCH "${SB_URL}/rest/v1/feedback?issue_number=eq.${N}" \
+            -H "apikey: ${SB_KEY}" -H "Authorization: Bearer ${SB_KEY}" \
+            -H 'Content-Type: application/json' \
+            -d '{"status":"triaged"}'

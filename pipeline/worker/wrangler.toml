@@ -1,0 +1,15 @@
+name = "pickly-edge"
+main = "src/index.ts"
+compatibility_date = "2025-10-01"
+
+[vars]
+GITHUB_REPO = "OWNER/pickly"        # замените на свой репозиторий приложения
+SUPABASE_URL = "https://YOUR_PROJECT.supabase.co"
+TELEGRAM_OWNER_ID = "000000000"     # ваш числовой id (узнать: @userinfobot)
+
+# Секреты задаются командой, НЕ в этом файле:
+#   npx wrangler secret put GITHUB_TOKEN
+#   npx wrangler secret put TELEGRAM_BOT_TOKEN
+#   npx wrangler secret put TELEGRAM_WEBHOOK_SECRET
+#   npx wrangler secret put SUPABASE_ANON_KEY
+#   npx wrangler secret put SUPABASE_SERVICE_KEY
