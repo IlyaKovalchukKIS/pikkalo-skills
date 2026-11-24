@@ -25,7 +25,7 @@ install.sh                     подключить скилл к проекту
 ./install.sh ~/code/pickly
 ```
 Создаст `.claude/skills/pickly` (Claude Code) и `.agents/skills/pickly` (Codex) как
-симлинки на этот репозиторий, положит `AGENTS.md`, `CLAUDE.md`, `tasks/`, `docs/DECISIONS.md`.
+копию скилла (`.agents/skills/pickly`) и ссылку на неё для Claude Code (`.claude/skills/pickly`), положит `AGENTS.md`, `CLAUDE.md`, `tasks/`, `docs/DECISIONS.md`.
 
 ## Как пользоваться
 - Claude Code: «Сделай экран разбора серии», «Проверь онбординг» — скилл подхватится сам,
