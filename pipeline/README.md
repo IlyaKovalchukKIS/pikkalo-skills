@@ -1,11 +1,11 @@
 # Установка конвейера отзывов и кабинета
 
-> **Внимание:** бэкенд Pickly переезжает в Yandex Cloud (данные в РФ). Разделы про
+> **Внимание:** бэкенд Pikkalo переезжает в Yandex Cloud (данные в РФ). Разделы про
 > Supabase и Cloudflare Worker ниже — черновик прошлой архитектуры; их логика переносится
 > в функции `backend/` репозитория приложения. Workflows и промпт triage — актуальны.
 
 Порядок: Supabase → Telegram-бот → Cloudflare Worker → GitHub (секреты и workflows).
-Схема и правила — `skills/pickly/references/feedback-pipeline.md`.
+Схема и правила — `skills/pikkalo/references/feedback-pipeline.md`.
 
 ## 1. Supabase
 1. Создайте проект на supabase.com (Free).
@@ -38,19 +38,19 @@ npx wrangler deploy
 
 Подключите вебхук Telegram (подставьте значения):
 ```bash
-curl "https://api.telegram.org/bot<TOKEN>/setWebhook" -d "url=https://pickly-edge.<you>.workers.dev/telegram" -d "secret_token=<WEBHOOK_SECRET>" -d 'allowed_updates=["callback_query"]'
+curl "https://api.telegram.org/bot<TOKEN>/setWebhook" -d "url=https://pikkalo-edge.<you>.workers.dev/telegram" -d "secret_token=<WEBHOOK_SECRET>" -d 'allowed_updates=["callback_query"]'
 ```
 
 ## 4. Яндекс OAuth
-oauth.yandex.ru → создать приложение: платформа iOS/Android, redirect `pickly://oauth`,
+oauth.yandex.ru → создать приложение: платформа iOS/Android, redirect `pikkalo://oauth`,
 доступы `login:info`, `login:email`, `cloud_api:disk.read`, `cloud_api:disk.write`.
 
 ## 5. GitHub (репозиторий приложения)
 Скопируйте файлы:
 ```bash
 mkdir -p .github/workflows .github/prompts
-cp <pickly-skills>/pipeline/github/workflows/*.yml .github/workflows/
-cp <pickly-skills>/pipeline/github/prompts/triage.md .github/prompts/
+cp <pikkalo-skills>/pipeline/github/workflows/*.yml .github/workflows/
+cp <pikkalo-skills>/pipeline/github/prompts/triage.md .github/prompts/
 ```
 Создайте метки: `feedback`, `kind:bug`, `kind:idea`, `kind:other`, `approved`, `rejected`,
 `route:claude`, `route:codex`, `priority:P1..P3`, `effort:S/M/L`.

@@ -1,4 +1,4 @@
-# Pickly — правила для агентов (Codex, Claude Code)
+# Pikkalo — правила для агентов (Codex, Claude Code)
 
 React Native / Expo (dev build, не Expo Go), TypeScript strict, iOS + Android.
 Приложение помогает разбирать галерею и Яндекс Диск: дубли, похожие кадры, лучший кадр.
@@ -12,11 +12,11 @@ React Native / Expo (dev build, не Expo Go), TypeScript strict, iOS + Android.
 5. Доступность WCAG 2.2 AA, Dynamic Type, Reduce Motion.
 
 ## Скилл
-Подробные правила — `.agents/skills/pickly/SKILL.md` и его `references/`. Читай только нужный
+Подробные правила — `.agents/skills/pikkalo/SKILL.md` и его `references/`. Читай только нужный
 справочник под задачу (таблица маршрутизации в SKILL.md).
 
 ## Команда
-Распределение работы и экономия токенов — `.agents/skills/pickly/references/team-routing.md`.
+Распределение работы и экономия токенов — `.agents/skills/pikkalo/references/team-routing.md`.
 Задачи — `tasks/TASK-NNN.md`, решения — `docs/DECISIONS.md`.
 
 ## Команды

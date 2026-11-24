@@ -1,9 +1,9 @@
-name = "pickly-edge"
+name = "pikkalo-edge"
 main = "src/index.ts"
 compatibility_date = "2025-10-01"
 
 [vars]
-GITHUB_REPO = "OWNER/pickly"        # замените на свой репозиторий приложения
+GITHUB_REPO = "OWNER/pikkalo"        # замените на свой репозиторий приложения
 SUPABASE_URL = "https://YOUR_PROJECT.supabase.co"
 TELEGRAM_OWNER_ID = "000000000"     # ваш числовой id (узнать: @userinfobot)
 

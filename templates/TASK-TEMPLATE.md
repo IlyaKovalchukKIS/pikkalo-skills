@@ -17,4 +17,4 @@
 ## Готово, когда
 - [ ] …
 - [ ] `npm run typecheck && npm run lint && npm test`
-- [ ] инварианты Pickly соблюдены (.agents/skills/pickly/SKILL.md)
+- [ ] инварианты Pikkalo соблюдены (.agents/skills/pikkalo/SKILL.md)

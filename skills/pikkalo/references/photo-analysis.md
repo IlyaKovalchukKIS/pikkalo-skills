@@ -1,4 +1,4 @@
-# Роль: аналитик фото Pickly
+# Роль: аналитик фото Pikkalo
 
 Задача — находить то, что можно разобрать, и честно подсказывать лучший кадр. Ошибка
 «предложили в корзину хорошее фото» стоит дороже, чем «не нашли дубль». Поэтому
@@ -14,7 +14,7 @@
  Я.Диск)       SQLite)        качество, лица, OCR)    категории)       кадр)      и уверенностью)
 ```
 
-Тяжёлые вычисления — в собственном Expo-модуле `modules/pickly-vision` с одним
+Тяжёлые вычисления — в собственном Expo-модуле `modules/pikkalo-vision` с одним
 TS-интерфейсом. **Сначала Android (Kotlin)**, Swift — при выходе iOS. Платформенные движки
 бесплатны, быстры и не требуют своих моделей:
 
@@ -113,7 +113,7 @@ quality = 0.30·sharp + 0.15·exposure + 0.35·faces + 0.10·composition + 0.10�
 | Источник | Как | Важно |
 |---|---|---|
 | iOS | `PHAssetChangeRequest.deleteAssets` (так работает `MediaLibrary.deleteAssetsAsync`) | Уходит в «Недавно удалённые», система показывает подтверждение. Пакетируй: один диалог на серию/сессию |
-| Android 11+ | `MediaStore.createTrashRequest(…, true)` в модуле `pickly-vision` | **Не** использовать `createDeleteRequest` — это безвозвратно. Проверь, что делает `deleteAssetsAsync` в текущей версии Expo, и не используй его для корзины |
+| Android 11+ | `MediaStore.createTrashRequest(…, true)` в модуле `pikkalo-vision` | **Не** использовать `createDeleteRequest` — это безвозвратно. Проверь, что делает `deleteAssetsAsync` в текущей версии Expo, и не используй его для корзины |
 | Android ≤ 10 | Корзины в системе нет | Своя корзина: переносим файл в скрытую папку приложения на 30 дней с возможностью вернуть; честно пишем об этом |
 | Яндекс Диск | `DELETE /v1/disk/resources?path=…&permanently=false` | Асинхронная операция для папок — опрашивай статус; восстановление `PUT /v1/disk/trash/resources/restore` |
 
@@ -138,7 +138,7 @@ quality = 0.30·sharp + 0.15·exposure + 0.35·faces + 0.10·composition + 0.10�
 
 ## Перенос из PhotoSeparator
 Берём код, а не инструкции проекта. Источник — `android/shared/src/commonMain/kotlin/ru/photoseparator/probe/`.
-Чистый Kotlin без зависимостей от Compose/Room переносится в `modules/pickly-vision/android`
+Чистый Kotlin без зависимостей от Compose/Room переносится в `modules/pikkalo-vision/android`
 почти дословно; тесты (`commonTest`) — вместе с кодом, как эталон поведения.
 | Что | Откуда | Как переносим |
 |---|---|---|
@@ -150,7 +150,7 @@ quality = 0.30·sharp + 0.15·exposure + 0.35·faces + 0.10·composition + 0.10�
 | Качество: резкость по тайлам 8×8 (верхняя четверть дисперсий Лапласиана), шум (MAD), экспозиция (p5–p95), пересвет | `analysis/Quality.kt` | как есть, затем добавить лица (ML Kit) в итоговую оценку |
 | Причины выбора и статус «оценки близки» (разрыв < 0.02) | `Quality.kt` → `recommend` | как есть; правило «≤ 30 % серии» заменяем на «лучший + решение пользователя» |
 | Защита последней копии | `deletion/DeletionEngine.kt` → `protectedLastCopy` | логику проверок переносим; исполнение — через корзину (`createTrashRequest`, Диск `permanently=false`) |
-| Клиент API Диска, каталог, инкрементальная синхронизация | `disk/DiskApi.kt`, `disk/DiskCatalog.kt` | как образец; в Pickly — TypeScript в приложении (сеть) + Kotlin только для вычислений |
+| Клиент API Диска, каталог, инкрементальная синхронизация | `disk/DiskApi.kt`, `disk/DiskCatalog.kt` | как образец; в Pikkalo — TypeScript в приложении (сеть) + Kotlin только для вычислений |
 | Хэши MD5/SHA-256 потоково | `disk/Md5.kt`, `disk/Sha256.kt` | как есть |
 Не переносим: экраны Compose, Room, фоновые воркеры, оркестратор, посредник отзывов —
-у Pickly своя архитектура (Expo, SQLite, Yandex Cloud).
+у Pikkalo своя архитектура (Expo, SQLite, Yandex Cloud).
