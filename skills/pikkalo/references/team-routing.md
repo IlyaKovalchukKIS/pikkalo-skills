@@ -65,6 +65,22 @@ Claude тратит токены там, где важны суждение, д�
 - Вливание через PR: `gh pr create` → проверки → `gh pr merge --merge --delete-branch`.
   Не `--rebase`: он переписывает хэши и расходится с локальным `main`.
 
+## Грабли Android release (проверено на эмуляторе 25.11)
+Тесты Jest/JVM их не ловят — **каждую задачу проверять release-сборкой на эмуляторе**:
+- **R8 вырезает классы, которые ищутся рефлексией** → падение только в release. Нужны keep-правила
+  через `expo-build-properties.android.extraProguardRules` (уже есть: WorkManager/Room, ML Kit).
+  Новая нативная библиотека с рефлексией → добавить её правило.
+- **Мост Expo не передаёт `null` внутри словарей** → нативный ответ «сжимать» (`compact`), а в JS
+  восстанавливать `null` (`normalizeAnalysis` в `modules/pikkalo-vision/src/index.ts`).
+- **Hermes без `Intl.RelativeTimeFormat` и `Intl.ListFormat`** → не использовать или делать запасной
+  вариант (Jest на Node их имеет и не поймает).
+- **Новый экран вне вкладок — в `Stack.Protected` в `app/_layout.tsx`**, иначе он доступен до онбординга
+  и может открыться первым.
+- **Решение «в корзину» из экрана группы — с `groupId`** (`useTrashFlow.request(assets, { groupId })`),
+  и оставленные кадры — `keep`/`best` в журнал, иначе награды не засчитают группу.
+- Проверка: `pm clear` + `pm grant … READ_MEDIA_IMAGES` даёт чистый запуск; ошибки JS — `adb logcat -b crash`;
+  обфусцированный стек — `android/app/build/outputs/mapping/release/mapping.txt`.
+
 ## Процесс
 1. Задача появилась (отзыв, идея владельца, баг) → маршрут по таблице.
 2. Если задача на UI — Claude пишет спецификацию экрана (состояния, движение, тексты) в
