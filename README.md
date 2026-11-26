@@ -17,6 +17,7 @@ skills/pikkalo/                 единый скилл (Claude Code и Codex ч
     auth-account.md            вход (Яндекс ID, Apple, Google), кабинет, подписка
     feedback-pipeline.md       отзыв → Telegram → агент → PR
     team-routing.md            Claude + Codex: кто что делает, экономия токенов
+    communication.md           краткие ответы, отчёты, описания PR, экономия контекста
     release.md                 выпуск обновления APK: чек-лист, публикация, откат
 templates/                     AGENTS.md, CLAUDE.md, шаблон задачи — для репозитория приложения
 pipeline/                      Cloudflare Worker, GitHub Actions, промпт triage, схема Supabase
