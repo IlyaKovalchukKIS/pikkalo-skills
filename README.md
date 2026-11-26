@@ -7,6 +7,7 @@
 ```
 skills/pikkalo/                 единый скилл (Claude Code и Codex читают один и тот же)
   SKILL.md                     оркестратор: инварианты, маршрутизация, режимы build/review/photo/perf/triage
+  scripts/codex-delegate.sh    проверка, что Codex подключён, и запуск задачи в worktree
   references/
     product.md                 бриф продукта
     ui-design.md               роль UI-дизайнера: стек, токены, движение, тактильность, производительность
