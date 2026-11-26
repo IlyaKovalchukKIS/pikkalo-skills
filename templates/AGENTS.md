@@ -18,6 +18,8 @@ React Native / Expo (dev build, не Expo Go), TypeScript strict, iOS + Android.
 ## Команда
 Распределение работы и экономия токенов — `.agents/skills/pikkalo/references/team-routing.md`.
 Задачи — `tasks/TASK-NNN.md`, решения — `docs/DECISIONS.md`.
+Реализацию делает Codex (обязательно, когда он подключён); Claude ставит задачи и проверяет.
+Codex не делегирует обратно Claude — вопросы пишет в «Заметки» задачи.
 
 ## Команды
 - Установка: `npm ci`
