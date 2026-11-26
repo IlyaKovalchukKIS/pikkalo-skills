@@ -6,12 +6,13 @@
 ## Состав
 ```
 skills/pikkalo/                 единый скилл (Claude Code и Codex читают один и тот же)
-  SKILL.md                     оркестратор: инварианты, маршрутизация, режимы build/review/photo/triage
+  SKILL.md                     оркестратор: инварианты, маршрутизация, режимы build/review/photo/perf/triage
   references/
     product.md                 бриф продукта
     ui-design.md               роль UI-дизайнера: стек, токены, движение, тактильность, производительность
     copy-marketing.md          роль маркетолога-редактора: посыл, словарь, награды, пуши, пейволл, ревью
     photo-analysis.md          роль аналитика фото: дубли, серии, лучший кадр, категории, корзина, метрики
+    algorithms.md              роль алгоритмиста: скорость фото/видео, память, конкурентность, мост, ускорение UI
     auth-account.md            вход (Яндекс ID, Apple, Google), кабинет, подписка
     feedback-pipeline.md       отзыв → Telegram → агент → PR
     team-routing.md            Claude + Codex: кто что делает, экономия токенов
