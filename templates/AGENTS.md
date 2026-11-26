@@ -16,6 +16,7 @@ React Native / Expo (dev build, не Expo Go), TypeScript strict, iOS + Android.
 справочник под задачу (таблица маршрутизации в SKILL.md).
 
 ## Команда
+Отвечай кратко: итог первой строкой, без воды — `.agents/skills/pikkalo/references/communication.md`.
 Распределение работы и экономия токенов — `.agents/skills/pikkalo/references/team-routing.md`.
 Задачи — `tasks/TASK-NNN.md`, решения — `docs/DECISIONS.md`.
 Реализацию делает Codex (обязательно, когда он подключён); Claude ставит задачи и проверяет.
