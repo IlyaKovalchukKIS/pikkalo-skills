@@ -53,7 +53,7 @@ description: Единый скилл команды Pikkalo — React Native/Exp
 | Тексты, онбординг, пейволл, пуши, награды, ревью смыслов и удобства | Маркетолог-редактор | `references/copy-marketing.md` |
 | Дубли, похожие, лучший кадр, категории, видео, люди, места, индексация, перенос кода PhotoSeparator | Аналитик фото | `references/photo-analysis.md` |
 | Скорость и память алгоритмов фото/видео, сжатие видео, тормоза интерфейса, холодный старт, мост JS↔native, SQLite | Алгоритмист | `references/algorithms.md` |
-| Награды, уровни, квесты, Витрина, Плёнка недели, напоминания | Геймдизайнер | `references/gamification.md` |
+| Награды, уровни, квесты, Витрина, Плёнка недели, напоминания, аудит геймификации, спецификация механик | Геймдизайнер | `references/gamification.md` |
 | Вход, кабинет, подписка, Yandex Cloud, Яндекс OAuth | — | `references/auth-account.md` |
 | Отзыв пользователя, triage, Telegram, авторазработка | — | `references/feedback-pipeline.md` |
 | Кто делает задачу (Claude или Codex), передача работы, экономия токенов | — | `references/team-routing.md` |
